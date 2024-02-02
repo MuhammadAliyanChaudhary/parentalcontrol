@@ -1,0 +1,27 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Base.Theme.ParentalControl" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize the primary color for your app -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <!-- Customize the color of the app bar (toolbar) -->
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <!-- Customize the text color for your app -->
+        <item name="android:textColor">@color/colorPrimaryDark</item>
+        <!-- Customize the background color for your app -->
+        <item name="android:colorBackground">@color/colorPrimary</item>
+        <!-- Customize the font family -->
+        <item name="android:fontFamily">@font/poppins_regular</item>
+    </style>
+
+    <style name="Theme.ParentalControl" parent="Base.Theme.ParentalControl" />
+
+    <style name="SplashTheme" parent="Base.Theme.ParentalControl" >
+        <item name="android:windowBackground">@drawable/background_splash</item>
+
+        <!-- Status bar and Nav bar configs -->
+        <item name="android:statusBarColor" tools:targetApi="l">@color/colorPrimary</item>
+        <item name="android:navigationBarColor">@color/colorPrimary</item>
+        <item name="android:windowLightStatusBar">true</item>
+    </style>
+
+</resources>

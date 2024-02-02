@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">ParentalControl</string>
+    <string name="request_permission_explanation">The permission is necessary for the location</string>
+    <string name="getPermissions">GET Permissions</string>
+    <string name="next">Next\n</string>
+    <string name="missing_permission_explanation">All permissions are necessary for the app to work smoothly\n</string>
+    <string name="ACCESS_FINE_LOCATION_EXPLANATION">Location permission needed for Checking Location</string>
+    <string name="ACCESS_COARSE_LOCATION_EXPLANATION">Location permission needed for Checking Location</string>
+    <string name="WRITE_EXTERNAL_STORAGE_EXPLANATION">Storage permission needed for uploading pictures from gallery</string>
+    <string name="CAMERA_EXPLANATION">Camera permission for taking pictures</string>
+    <string name="READ_EXTERNAL_STORAGE_EXPLANATION">Storage Permission Needed</string>
+    <string name="get_again">Get Again</string>
+    <string name="got_it">Okay\n</string>
+
+
+    <string name="service_name">Call Recording Service</string>
+    <string name="service_description">Your service description here.</string>
+
+
+</resources>
