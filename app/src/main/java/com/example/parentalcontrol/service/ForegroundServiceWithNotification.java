@@ -1,6 +1,9 @@
 package com.example.parentalcontrol.service;
 
+
+
 import android.Manifest;
+import android.app.ActivityManager;
 import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.NotificationChannel;
@@ -9,6 +12,7 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.ContentObserver;
 import android.location.Location;
@@ -46,11 +50,20 @@ import java.util.List;
 
 public class ForegroundServiceWithNotification extends Service {
 
+    private static final String PREF_FILE_NAME = "AppLockerPrefs";
+    private static final String LOCKED_APPS_PREF_KEY = "LockedApps";
+
     private FusedLocationProviderClient fusedLocationClient;
     private ContentObserver contentObserver;
     private DatabaseReference locationReference;
     private Handler handler = new Handler();
     private final int delayMillis = 5000; // 5 seconds
+    private static final int DELAY_INTERVAL = 2000; // 2 seconds delay between checks
+    private Handler handlerAppsCheck;
+    private Runnable runnableAppsCheck;
+    private SharedPreferences prefs;
+
+
 
 
     @Override
@@ -76,6 +89,8 @@ public class ForegroundServiceWithNotification extends Service {
 
 
 
+        handlerForAppsChecking();
+
 
         Toast.makeText(this, "Work", Toast.LENGTH_SHORT).show();
 
@@ -97,6 +112,43 @@ public class ForegroundServiceWithNotification extends Service {
 
         return START_STICKY;
     }
+
+    private void handlerForAppsChecking() {
+        handlerAppsCheck = new Handler();
+        runnableAppsCheck = new Runnable() {
+            @Override
+            public void run() {
+                checkCurrentlyRunningApp(); // Check currently running app periodically
+                handlerAppsCheck.postDelayed(this, DELAY_INTERVAL);
+            }
+        };
+        handler.postDelayed(runnableAppsCheck, DELAY_INTERVAL);
+    }
+
+    private void checkCurrentlyRunningApp() {
+            ActivityManager activityManager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+            List<ActivityManager.RunningTaskInfo> runningTaskInfoList = activityManager.getRunningTasks(1);
+            if (runningTaskInfoList != null && !runningTaskInfoList.isEmpty()) {
+                String packageName = runningTaskInfoList.get(0).topActivity.getPackageName();
+                // Check if the package name belongs to a locked app
+                if (isAppLocked(packageName)) {
+                    // Overlay your app on top of the locked app
+                    // Implement overlay logic here
+                    Toast.makeText(this, "Overlaying on locked app: " + packageName, Toast.LENGTH_SHORT).show();
+                }
+            }
+        }
+
+
+    private boolean isAppLocked(String packageName) {
+        prefs = this.getSharedPreferences(PREF_FILE_NAME, Context.MODE_PRIVATE);
+        String lockedApps = prefs.getString(LOCKED_APPS_PREF_KEY, "");
+        if (packageName != null) {
+            return lockedApps.contains(packageName);
+        }
+        return false; // Return false if packageName is null
+    }
+
 
     @Nullable
     @Override

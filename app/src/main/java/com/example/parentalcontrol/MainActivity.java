@@ -12,6 +12,7 @@ import androidx.core.content.ContextCompat;
 
 import android.Manifest;
 import android.app.ActivityManager;
+import android.app.AppOpsManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -65,6 +66,7 @@ public class MainActivity extends BaseActivity {
 
     private static final String SERVER_IP = "172.16.10.235";
     private static final int SERVER_PORT = 12345;
+    private static final int REQUEST_DRAW_OVER_APPS_PERMISSION = 109;
 
     private ActivityMainBinding binding;
     private static String TAG = "Attribute";
@@ -126,6 +128,10 @@ public class MainActivity extends BaseActivity {
 
 
         //startLocationServices();
+
+        if(!isUsageAccessPermissionGranted()){
+            requestUsageAccessPermission();
+        }
 
         if(!foregroundServiceRunning()){
             startForegroundServiceWithNotification();
@@ -236,6 +242,35 @@ public class MainActivity extends BaseActivity {
 
 
     }
+
+    private boolean isDrawOverAppsPermissionGranted() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            return Settings.canDrawOverlays(this);
+        }
+        return true;
+    }
+
+    private void requestDrawOverAppsPermission() {
+        Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:" + getPackageName()));
+        startActivityForResult(intent, REQUEST_DRAW_OVER_APPS_PERMISSION);
+    }
+
+
+
+    private boolean isUsageAccessPermissionGranted() {
+        AppOpsManager appOps = null;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
+            appOps = (AppOpsManager) getSystemService(Context.APP_OPS_SERVICE);
+            int mode = appOps.checkOpNoThrow(AppOpsManager.OPSTR_GET_USAGE_STATS, android.os.Process.myUid(), getPackageName());
+            return mode == AppOpsManager.MODE_ALLOWED;
+        }
+        return true;
+    }
+
+    private void requestUsageAccessPermission() {
+        startActivity(new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS));
+    }
+
 
     private void reqScreenCapturePermission() {
         Intent projectionIntent = null;
@@ -408,6 +443,12 @@ public class MainActivity extends BaseActivity {
                 startSocket(resultCode, data);
             } else {
                 Toast.makeText(this, "Screen Capture permission denied", Toast.LENGTH_SHORT).show();
+            }
+        } else if (requestCode == REQUEST_DRAW_OVER_APPS_PERMISSION) {
+            if (isDrawOverAppsPermissionGranted()) {
+                Toast.makeText(this, "Permission Granted", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(this, "Permission denied", Toast.LENGTH_SHORT).show();
             }
         }
     }

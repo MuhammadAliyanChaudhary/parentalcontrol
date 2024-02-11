@@ -6,6 +6,7 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
+import android.util.Log;
 
 import com.example.parentalcontrol.model.AppModel;
 
@@ -46,9 +47,11 @@ public class AppsInstalledUtils {
                 // Exclude system apps if needed
                 if ((applicationInfo.flags & ApplicationInfo.FLAG_SYSTEM) == 0) {
                     String appName = (String) packageManager.getApplicationLabel(applicationInfo);
+                    String packageName = applicationInfo.packageName;
                     Drawable appIcon = packageManager.getApplicationIcon(applicationInfo);
 
-                    AppModel appModel = new AppModel(appName, appIcon);
+                    Log.d("appinstalledpackages", ""+packageName);
+                    AppModel appModel = new AppModel(appName, appIcon, packageName);
                     appList.add(appModel);
                 }
             }
