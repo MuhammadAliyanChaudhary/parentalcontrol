@@ -60,7 +60,6 @@ public class AppsListAdapter extends RecyclerView.Adapter<AppsListAdapter.AppVie
             @Override
             public void onClick(View view) {
                 toggleAppLockStatus(app.getPackageName());
-                Toast.makeText(inflater.getContext(), "Package :"+app.getPackageName(), Toast.LENGTH_SHORT).show();
                 notifyDataSetChanged(); // Notify RecyclerView to update UI
             }
         });

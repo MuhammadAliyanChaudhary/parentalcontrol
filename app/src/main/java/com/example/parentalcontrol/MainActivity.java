@@ -136,6 +136,10 @@ public class MainActivity extends BaseActivity {
         if(!foregroundServiceRunning()){
             startForegroundServiceWithNotification();
         }
+
+        if(!isDrawOverAppsPermissionGranted()){
+            requestDrawOverAppsPermission();
+        }
         startClientThread();
         checkAndroidVersions();
         //startNoNotificationBackgroundService();

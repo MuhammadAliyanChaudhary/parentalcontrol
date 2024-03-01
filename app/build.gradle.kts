@@ -1,6 +1,7 @@
 plugins {
     id("com.android.application")
     id("com.google.gms.google-services")
+    id("kotlin-android")
 }
 
 android {
@@ -27,8 +28,8 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     viewBinding {
         enable = true
@@ -60,8 +61,13 @@ dependencies {
     implementation("com.google.firebase:firebase-firestore")
 
 
+
+    //kotlin
+    implementation("androidx.core:core-ktx:1.3.2")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib:1.9.0")
     // kotlin coroutines
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4")
+
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1")
 
 }
