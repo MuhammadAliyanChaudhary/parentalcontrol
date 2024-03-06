@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
@@ -17,6 +18,7 @@ class PinOverlayView(context: Context, attrs: AttributeSet?) : RelativeLayout(co
     private lateinit var pinEditText: EditText
     private lateinit var submitButton: Button
     private lateinit var incorrectPinText: TextView
+    private lateinit var parentLayout: ViewGroup // Parent layout of PinOverlayView
 
     init {
         LayoutInflater.from(context).inflate(R.layout.overlay_pin_screen, this, true)
@@ -24,6 +26,8 @@ class PinOverlayView(context: Context, attrs: AttributeSet?) : RelativeLayout(co
         submitButton = findViewById(R.id.submitButton)
         incorrectPinText = findViewById(R.id.incorrectPinTxt)
 
+        // Find the parent layout of PinOverlayView
+        parentLayout = parent as ViewGroup
 
 
         submitButton.setOnClickListener {
@@ -39,6 +43,6 @@ class PinOverlayView(context: Context, attrs: AttributeSet?) : RelativeLayout(co
     }
 
     private fun hideOverlay() {
-        visibility = View.GONE
+        parentLayout.visibility = View.GONE
     }
 }
